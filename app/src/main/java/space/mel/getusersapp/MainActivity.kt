@@ -35,13 +35,7 @@ class MainActivity : AppCompatActivity() {
         initListeners()
         initSwipeToRefresh()
         initProgressBar()
-
-        actionBarToggle = ActionBarDrawerToggle(
-            this,
-            myBinding.drawerLayout,
-            R.string.nav_open,
-            R.string.nav_close
-        )
+        initBarToggle()
 
         myBinding.drawerLayout.addDrawerListener(actionBarToggle)
         actionBarToggle.syncState()
@@ -59,6 +53,15 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun initBarToggle() {
+        actionBarToggle = ActionBarDrawerToggle(
+            this,
+            myBinding.drawerLayout,
+            R.string.nav_open,
+            R.string.nav_close
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
