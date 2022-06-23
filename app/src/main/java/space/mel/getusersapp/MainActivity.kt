@@ -80,6 +80,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun startFullInformation(result: Result) {
+
         val intent = Intent()
         intent.putExtra(
             "UserFullInformation",
