@@ -12,4 +12,7 @@
     <color name="green">#3EDA09</color>
     <color name="blue">#051EBD</color>
     <color name="yellow">#FFF400</color>
+    <color name="gradientTop">#15ECA8</color>
+    <color name="gradientBottom">#115ede</color>
+
 </resources>
