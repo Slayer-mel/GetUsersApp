@@ -10,5 +10,8 @@
         of the navigation drawer-->
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
-    <string name="найти" />
+    <string name="find_user">Поиск пользователя</string>
+    <string name="exact_search">Точный поиск</string>
+    <string name="find">Найти</string>
+    />
 </resources>

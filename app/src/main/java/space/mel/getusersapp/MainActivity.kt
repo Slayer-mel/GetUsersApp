@@ -1,12 +1,10 @@
 package space.mel.getusersapp
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +15,7 @@ import kotlinx.coroutines.withContext
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.ActivityMainBinding
 import space.mel.getusersapp.retrofit.UserNetwork
+import java.lang.Exception
 
 lateinit var myBinding: ActivityMainBinding
 var myAdapter: RecyclerViewAdapter? = null
@@ -45,7 +44,9 @@ class MainActivity : AppCompatActivity() {
         myBinding.navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.myProfile -> {
-                    Toast.makeText(this, "Найти", Toast.LENGTH_LONG).show()
+                    myAdapter?.currentList?.let { list ->
+                        if(list.isNotEmpty()) startFindInfo(list)
+                    }
                     true
                 }
                 else -> {
@@ -92,18 +93,19 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun startFindInfo(result: Result) {
-        val intent = Intent()
-        intent.putExtra(
-            "FindInfo",
-            result
-        )
-        intent.setClass(this, FindInfo::class.java)
+    fun startFindInfo(resultList: List<Result>) {
+        val intent = Intent().apply {
+            putExtra(
+                "FindInfo",
+                resultList.toTypedArray()
+            )
+            setClass(this@MainActivity, FindInfo::class.java)
+        }
         startActivity(intent)
     }
 
     fun getData() {
-        val s: Int = myBinding.edtAmount.text.toString().toInt()
+        val inputIntText: Int = myBinding.edtAmount.text.toIntOrZero()
         val handler = CoroutineExceptionHandler { _, _ ->
 
             myBinding.swipe.isRefreshing = false
@@ -112,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         progressBar?.show()
 
         lifecycleScope.launch(handler) {
-            val users = UserNetwork.retrofit.getUsers(s, gender = "female")
+            val users = UserNetwork.retrofit.getUsers(inputIntText, gender = "female")
 
             withContext(Dispatchers.Main) {
                 myAdapter?.setItems(users.results)
@@ -132,5 +134,13 @@ class MainActivity : AppCompatActivity() {
     fun initProgressBar() {
         progressBar = Dialog(this)
         progressBar?.setContentView(R.layout.progress_bar_alert)
+    }
+
+    fun Editable?.toIntOrZero() : Int {
+        return try {
+            toString().toInt()
+        } catch (e : Exception) {
+            0
+        }
     }
 }

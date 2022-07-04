@@ -6,7 +6,7 @@
     android:layout_margin="5dp">
 
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgPhoto"
         android:layout_width="50dp"
         android:layout_height="0dp"
@@ -21,7 +21,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:background="@color/black"
+        android:background="@drawable/roundstyle"
+        android:backgroundTint="@android:color/holo_blue_dark"
         android:text=""
         android:hint="ИмяИмяИмя"
         android:padding="10dp"
