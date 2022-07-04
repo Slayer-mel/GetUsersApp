@@ -22,7 +22,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:background="@color/black"
+        android:background="@drawable/roundstyle"
         android:gravity="center"
         android:inputType="number"
         android:hint="Количество"
@@ -31,7 +31,8 @@
         android:textColorHint="@color/white"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <TextView
         android:id="@+id/btnGet"
@@ -40,7 +41,7 @@
         android:layout_marginHorizontal="30dp"
         android:width="100dp"
         android:height="50dp"
-        android:background="@color/black"
+        android:background="@drawable/roundstyle"
         android:gravity="center"
         android:text="@string/get"
         android:textColor="@color/white"

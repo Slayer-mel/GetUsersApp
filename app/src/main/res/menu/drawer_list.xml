@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:tools="http://schemas.android.com/tools"
-tools:ignore="HardcodedText">
+tools:showIn="@layout/nav_header">
     <item
         android:id="@+id/myProfile"
         android:icon="@android:drawable/ic_menu_search"
