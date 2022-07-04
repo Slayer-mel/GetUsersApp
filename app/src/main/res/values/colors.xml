@@ -14,5 +14,6 @@
     <color name="yellow">#FFF400</color>
     <color name="gradientTop">#15ECA8</color>
     <color name="gradientBottom">#115ede</color>
+    <color name="gray">#00ffffff</color>
 
 </resources>

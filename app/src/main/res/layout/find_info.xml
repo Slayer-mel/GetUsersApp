@@ -30,7 +30,7 @@
         android:height="50dp"
         android:background="@drawable/roundstyle"
         android:gravity="center"
-        android:text="Найти"
+        android:text="@string/find"
         android:paddingStart="5dp"
         android:drawableLeft="@android:drawable/ic_search_category_default"
         android:textColor="@color/white"

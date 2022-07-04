@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getData() {
-        val s: Int = myBinding.edtAmount.text.toIntOrZero()
+        val inputIntText: Int = myBinding.edtAmount.text.toIntOrZero()
         val handler = CoroutineExceptionHandler { _, _ ->
 
             myBinding.swipe.isRefreshing = false
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         progressBar?.show()
 
         lifecycleScope.launch(handler) {
-            val users = UserNetwork.retrofit.getUsers(s, gender = "female")
+            val users = UserNetwork.retrofit.getUsers(inputIntText, gender = "female")
 
             withContext(Dispatchers.Main) {
                 myAdapter?.setItems(users.results)
