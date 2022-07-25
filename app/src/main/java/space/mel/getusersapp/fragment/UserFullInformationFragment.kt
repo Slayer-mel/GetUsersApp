@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import space.mel.getusersapp.R
-import space.mel.getusersapp.UserDataBase
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.UserFullInformationBinding
 
@@ -40,16 +39,6 @@ class UserFullInformationFragment : BaseFragment() {
         userFullInformationBinding.radioWhite.setOnClickListener {
             userFullInformationBinding.userFullInformation.setBackgroundColor(resources.getColor(R.color.white))
         }
-
-
-        /*val data = arguments?.getParcelable<Result>("UserFullInformation")
-        if (data != null) {
-            setContent(data)
-        }*/
-       /* val data = requireArguments().getParcelable<Result>("UserFullInformation")
-        if (data != null) {
-            setContent(data)
-        }*/
 
         val data = arguments?.getSerializable("UserFullInformation")
         if (data != null) {
