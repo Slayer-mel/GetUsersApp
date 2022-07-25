@@ -29,7 +29,6 @@ class FindInfoFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         resultList = requireArguments().getParcelableArrayList("FindInfo")
-        Log.d("LOGSLOGS", "ResultListSize: ${resultList?.size}")
         initAdapter()
         resultList?.let { findInfoAdapter?.setItems(it) }
 
@@ -39,18 +38,18 @@ class FindInfoFragment : BaseFragment() {
         }
     }
 
-
     fun compareUserData(): List<Result> {
         val enteredText = findInfoBinding.edtInput.text.toString().lowercase()
-        val filtredResult = resultList?.filter { person ->
-            when {
-                person.name?.first?.lowercase()?.contains(enteredText) == true -> true
-                person.name?.last?.lowercase()?.contains(enteredText) == true -> true
-                else -> false
-            }
-        } ?: emptyList()
-        return filtredResult
+        return getFilteredList(enteredText)
     }
+
+    private fun getFilteredList(enteredText: String) = resultList?.filter { person ->
+        when {
+            person.name?.first?.lowercase()?.contains(enteredText) == true -> true
+            person.name?.last?.lowercase()?.contains(enteredText) == true -> true
+            else -> false
+        }
+    } ?: emptyList()
 
     fun initAdapter() {
         findInfoAdapter = RecyclerViewAdapter(
@@ -60,15 +59,6 @@ class FindInfoFragment : BaseFragment() {
     }
 
     fun startFoundUserFullInformation(result: Result) {
-/*        val bundle = Bundle()
-        bundle.putParcelable(
-            "UserFullInformation",
-            result
-        )
-        val fragment = UserFullInformationFragment()
-        fragment.arguments = bundle
-        replaceFragment(fragment)*/
-
         findNavController().navigate(R.id.action_homeFragment_to_findInfoFragment2, Bundle().apply {
             putParcelable(
                 "UserFullInformation",

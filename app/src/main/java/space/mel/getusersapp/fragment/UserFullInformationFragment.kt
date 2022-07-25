@@ -41,10 +41,6 @@ class UserFullInformationFragment : BaseFragment() {
         }
 
 
-        /*val data = arguments?.getParcelable<Result>("UserFullInformation")
-        if (data != null) {
-            setContent(data)
-        }*/
         val data = requireArguments().getParcelable<Result>("UserFullInformation")
         if (data != null) {
             setContent(data)
