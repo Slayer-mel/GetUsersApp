@@ -1,21 +1,28 @@
 package space.mel.getusersapp.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import space.mel.getusersapp.R
 import space.mel.getusersapp.RecyclerViewAdapter
+import space.mel.getusersapp.UserDataBase
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.FindInfoBinding
 
 class FindInfoFragment : BaseFragment() {
     lateinit var findInfoBinding: FindInfoBinding
-    var resultList: List<Result>? = null
+    var resultList: ArrayList<Result> = arrayListOf()
     var findInfoAdapter: RecyclerViewAdapter? = null
+    private val userDataBaseDao by lazy {
+        UserDataBase.getDatabase(requireContext().applicationContext).userDao()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,11 +35,16 @@ class FindInfoFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        resultList = requireArguments().getParcelableArrayList("FindInfo")
-        Log.d("LOGSLOGS", "ResultListSize: ${resultList?.size}")
         initAdapter()
-        resultList?.let { findInfoAdapter?.setItems(it) }
 
+        lifecycleScope.launch (Dispatchers.IO){
+            val results = userDataBaseDao.getAllUsers()?.results ?: emptyList() // if results!=null, return userDataBaseDao.getAllUsers()?.results  else if results==null, return emptyList()
+            resultList.clear() //ArrayList<Result> will be empty
+            resultList.addAll(results) // add results to resultList
+            withContext(Dispatchers.Main) {
+                findInfoAdapter?.setItems(resultList)
+            }
+        }
 
         findInfoBinding.btnGet.setOnClickListener {
             findInfoAdapter?.setItems(compareUserData())
@@ -42,13 +54,13 @@ class FindInfoFragment : BaseFragment() {
 
     fun compareUserData(): List<Result> {
         val enteredText = findInfoBinding.edtInput.text.toString().lowercase()
-        val filtredResult = resultList?.filter { person ->
+        val filtredResult = resultList.filter { person ->
             when {
                 person.name?.first?.lowercase()?.contains(enteredText) == true -> true
                 person.name?.last?.lowercase()?.contains(enteredText) == true -> true
                 else -> false
             }
-        } ?: emptyList()
+        }
         return filtredResult
     }
 
@@ -60,31 +72,13 @@ class FindInfoFragment : BaseFragment() {
     }
 
     fun startFoundUserFullInformation(result: Result) {
-/*        val bundle = Bundle()
-        bundle.putParcelable(
+
+        val bundle = Bundle()
+        bundle.putSerializable(
             "UserFullInformation",
-            result
-        )
-        val fragment = UserFullInformationFragment()
-        fragment.arguments = bundle
-        replaceFragment(fragment)*/
-
-        findNavController().navigate(R.id.action_homeFragment_to_findInfoFragment2, Bundle().apply {
-            putParcelable(
-                "UserFullInformation",
-                result)
-        })
+            result)
+        findNavController().navigate(R.id.action_homeFragment_to_findInfoFragment2, bundle)
     }
-
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = childFragmentManager
-        fragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .replace(R.id.fragmentContainer, HomeFragment())
-            .addToBackStack(null)
-            .commit()
-        }
 
     override fun getTitle(): Int {
         return R.string.find_user

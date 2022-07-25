@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import space.mel.getusersapp.R
+import space.mel.getusersapp.UserDataBase
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.UserFullInformationBinding
 
@@ -45,9 +46,14 @@ class UserFullInformationFragment : BaseFragment() {
         if (data != null) {
             setContent(data)
         }*/
-        val data = requireArguments().getParcelable<Result>("UserFullInformation")
+       /* val data = requireArguments().getParcelable<Result>("UserFullInformation")
         if (data != null) {
             setContent(data)
+        }*/
+
+        val data = arguments?.getSerializable("UserFullInformation")
+        if (data != null) {
+            setContent(data as Result)
         }
     }
 
