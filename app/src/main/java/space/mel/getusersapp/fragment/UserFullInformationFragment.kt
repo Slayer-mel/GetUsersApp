@@ -1,21 +1,29 @@
-package space.mel.getusersapp
+package space.mel.getusersapp.fragment
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import space.mel.getusersapp.R
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.UserFullInformationBinding
 
 
-/*
-class UserFullInformation : AppCompatActivity() {
+class UserFullInformationFragment : BaseFragment() {
     lateinit var userFullInformationBinding: UserFullInformationBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        userFullInformationBinding = UserFullInformationBinding.inflate(layoutInflater)
-        setContentView(userFullInformationBinding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        userFullInformationBinding = UserFullInformationBinding.inflate(inflater)
+        return userFullInformationBinding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         userFullInformationBinding.radioRed.setOnClickListener {
             userFullInformationBinding.userFullInformation.setBackgroundColor(resources.getColor(R.color.red))
         }
@@ -33,9 +41,13 @@ class UserFullInformation : AppCompatActivity() {
         }
 
 
-        val data = intent.getParcelableExtra<Result>("UserFullInformation")
-        data?.let {
-            setContent(it)
+        /*val data = arguments?.getParcelable<Result>("UserFullInformation")
+        if (data != null) {
+            setContent(data)
+        }*/
+        val data = requireArguments().getParcelable<Result>("UserFullInformation")
+        if (data != null) {
+            setContent(data)
         }
     }
 
@@ -50,4 +62,8 @@ class UserFullInformation : AppCompatActivity() {
                 .into(userFullInformationBinding.ivProfile)
         }
     }
-}*/
+
+    override fun getTitle(): Int {
+        return R.string.exact_search
+    }
+}
