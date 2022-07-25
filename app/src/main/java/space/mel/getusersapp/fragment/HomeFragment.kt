@@ -57,13 +57,6 @@ class HomeFragment : BaseFragment() {
                 result
             )
         })
-        /*val bundle=Bundle()
-        bundle.putParcelable("UserFullInformation",
-            result)
-        val fragment= UserFullInformationFragment()
-        fragment.arguments=bundle
-        replaceFragment(fragment)*/
-
     }
 
     fun startFindInfo(resultList: List<Result>) {
@@ -74,14 +67,6 @@ class HomeFragment : BaseFragment() {
                 resultList.toTypedArray()
             )
         })
-
-        /*val bundle=Bundle()
-        bundle.putParcelableArray("FindInfo",
-            resultList.toTypedArray()
-        )
-        val fragment = FindInfoFragment()
-        fragment.arguments=bundle
-        replaceFragment(fragment)*/
     }
 
     fun getData() {
@@ -124,15 +109,6 @@ class HomeFragment : BaseFragment() {
         } catch (e: Exception) {
             0
         }
-    }
-
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = parentFragmentManager
-        fragmentManager
-            .beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
-            .commit()
     }
 
     override fun getTitle(): Int {
