@@ -6,12 +6,11 @@ import androidx.appcompat.app.AppCompatActivity
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.FindInfoBinding
 
-/*
-class FindInfo : AppCompatActivity() {
-    lateinit var findInfoBinding: FindInfoBinding
-    var resultList: List<Result>? = null
-    var findInfoAdapter: RecyclerViewAdapter? = null
+lateinit var findInfoBinding: FindInfoBinding
+var resultList: List<Result>? = null
+var findInfoAdapter: RecyclerViewAdapter? = null
 
+class FindInfo : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         findInfoBinding = FindInfoBinding.inflate(layoutInflater)
@@ -64,4 +63,3 @@ class FindInfo : AppCompatActivity() {
         }
     }
 }
-*/

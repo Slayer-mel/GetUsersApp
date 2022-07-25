@@ -6,10 +6,9 @@ import com.bumptech.glide.Glide
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.UserFullInformationBinding
 
+lateinit var userFullInformationBinding: UserFullInformationBinding
 
-/*
 class UserFullInformation : AppCompatActivity() {
-    lateinit var userFullInformationBinding: UserFullInformationBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,10 +27,6 @@ class UserFullInformation : AppCompatActivity() {
         userFullInformationBinding.radioGreen.setOnClickListener {
             userFullInformationBinding.userFullInformation.setBackgroundColor(resources.getColor(R.color.green))
         }
-        userFullInformationBinding.radioWhite.setOnClickListener {
-            userFullInformationBinding.userFullInformation.setBackgroundColor(resources.getColor(R.color.white))
-        }
-
 
         val data = intent.getParcelableExtra<Result>("UserFullInformation")
         data?.let {
@@ -50,4 +45,4 @@ class UserFullInformation : AppCompatActivity() {
                 .into(userFullInformationBinding.ivProfile)
         }
     }
-}*/
+}
