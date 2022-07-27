@@ -80,7 +80,8 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.4.2'
     kapt 'androidx.room:room-compiler:2.4.2'
     implementation 'androidx.room:room-ktx:2.4.2'
-    androidTestImplementation "androidx.room:room-testing:2.4.2" // Kotlin Extensions and Coroutines support for Room
+    androidTestImplementation 'androidx.room:room-testing:2.4.2' // Kotlin Extensions and Coroutines support for Room
 
-
+//koin
+    implementation 'io.insert-koin:koin-android:3.2.0'
 }

@@ -10,21 +10,21 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.*
+import org.koin.android.ext.android.inject
 import space.mel.getusersapp.R
 import space.mel.getusersapp.RecyclerViewAdapter
-import space.mel.getusersapp.UserDataBase
+import space.mel.getusersapp.dao.UsersDao
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.HomeFragmentBinding
-import space.mel.getusersapp.retrofit.UserNetwork
+import space.mel.getusersapp.retrofit.UserApi
 
 class HomeFragment : BaseFragment() {
     lateinit var myBinding: HomeFragmentBinding
     var myAdapter: RecyclerViewAdapter? = null
     var progressBar: Dialog? = null
     var resultList: ArrayList<Result> = arrayListOf()
-    private val userDataBaseDao by lazy {
-        UserDataBase.getDatabase(requireContext().applicationContext).userDao()// DataBase initialization
-    }
+    val userApi: UserApi by inject()
+    val dao: UsersDao by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,8 +42,9 @@ class HomeFragment : BaseFragment() {
         initListeners()
         initSwipeToRefresh()
         initProgressBar()
-        lifecycleScope.launch (Dispatchers.IO){
-            val results = userDataBaseDao.getAllUsers()?.results ?: emptyList() // if results!=null, return userDataBaseDao.getAllUsers()?.results  else if results==null, return emptyList()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val results = dao.getAllUsers()?.results
+                ?: emptyList() // if results!=null, return userDataBaseDao.getAllUsers()?.results  else if results==null, return emptyList()
             resultList.clear() //ArrayList<Result> will be empty
             resultList.addAll(results) // add results to resultList
             withContext(Dispatchers.Main) {
@@ -86,8 +87,8 @@ class HomeFragment : BaseFragment() {
         progressBar?.show()
 
         CoroutineScope(Dispatchers.IO).launch(handler) {
-            val users = UserNetwork.retrofit.getUsers(inputIntText, gender = "female")
-            userDataBaseDao.insert(users) // enter data to DB from retrofit
+            val users = userApi.getUsers(inputIntText, gender = "female")
+            dao.insert(users) // enter data to DB from retrofit
             withContext(Dispatchers.Main) {
                 myAdapter?.setItems(users.results)
                 myBinding.swipe.isRefreshing = false

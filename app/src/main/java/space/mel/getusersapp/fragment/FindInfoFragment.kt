@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 import space.mel.getusersapp.R
 import space.mel.getusersapp.RecyclerViewAdapter
-import space.mel.getusersapp.UserDataBase
+import space.mel.getusersapp.dao.UsersDao
 import space.mel.getusersapp.data.Result
 import space.mel.getusersapp.databinding.FindInfoBinding
 
@@ -20,9 +20,8 @@ class FindInfoFragment : BaseFragment() {
     lateinit var findInfoBinding: FindInfoBinding
     var resultList: ArrayList<Result> = arrayListOf()
     var findInfoAdapter: RecyclerViewAdapter? = null
-    private val userDataBaseDao by lazy {
-        UserDataBase.getDatabase(requireContext().applicationContext).userDao()
-    }
+    val dao : UsersDao by inject()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +37,7 @@ class FindInfoFragment : BaseFragment() {
         initAdapter()
 
         lifecycleScope.launch (Dispatchers.IO){
-            val results = userDataBaseDao.getAllUsers()?.results ?: emptyList() // if results!=null, return userDataBaseDao.getAllUsers()?.results  else if results==null, return emptyList()
+            val results = dao.getAllUsers()?.results ?: emptyList() // if results!=null, return userDataBaseDao.getAllUsers()?.results  else if results==null, return emptyList()
             resultList.clear() //ArrayList<Result> will be empty
             resultList.addAll(results) // add results to resultList
             withContext(Dispatchers.Main) {
