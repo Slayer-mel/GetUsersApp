@@ -21,10 +21,4 @@ open class BaseFragment : Fragment() {
     open fun getTitle() : Int = R.string.app_name
 
     open fun isSideBarNeeded() : Boolean = false
-
-    fun setDataInActivity(list : List<Result>) {
-        (activity as? MainActivity)?.setCurrentData(list)
-    }
-
-    fun getDataFromActivity() = (activity as? MainActivity)?.getCurrentList() ?: emptyList()
 }

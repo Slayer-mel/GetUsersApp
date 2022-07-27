@@ -7,10 +7,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import space.mel.getusersapp.data.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import space.mel.getusersapp.databinding.ActivityMainBinding
 import space.mel.getusersapp.fragment.HomeFragment
 
@@ -20,7 +23,9 @@ private lateinit var actionBarToggle: ActionBarDrawerToggle
 
 class MainActivity : AppCompatActivity() {
     lateinit var navController: NavController
-    val currentDataList: ArrayList<Result> = arrayListOf()
+    private val userDataBaseDao by lazy {
+        UserDataBase.getDatabase(this).userDao()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setUpSideBar() {
         mainBinding.drawerLayout.addDrawerListener(actionBarToggle)
         actionBarToggle.syncState()
@@ -48,18 +54,16 @@ class MainActivity : AppCompatActivity() {
         mainBinding.navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.myProfile -> {
-                    //TODO: Change to Room
-                    if (currentDataList.isNotEmpty()) {
-                        findNavController(R.id.navView).navigate(R.id.action_homeFragment_to_findInfoFragment2,
-                            Bundle().apply
-                            {
-                                putParcelableArrayList(
-                                    "FindInfo",
-                                    currentDataList                                )
-                            })
-
-                        mainBinding.drawerLayout.closeDrawer(Gravity.LEFT)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val results = userDataBaseDao.getAllUsers()?.results ?: emptyList()
+                            if (results.isNotEmpty()) {
+                                withContext(Dispatchers.Main) {
+                                    findNavController(R.id.navView).navigate(R.id.action_homeFragment_to_findInfoFragment2)
+                                }
+                            }
                     }
+
+                    mainBinding.drawerLayout.closeDrawer(Gravity.LEFT)
 
                     true
                 }
@@ -95,11 +99,4 @@ class MainActivity : AppCompatActivity() {
     fun disableSideBar() {
         mainBinding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
-
-    fun setCurrentData(list: List<Result>) {
-        currentDataList.clear()
-        currentDataList.addAll(list)
-    }
-
-    fun getCurrentList() = currentDataList
 }

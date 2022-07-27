@@ -40,10 +40,9 @@ class UserFullInformationFragment : BaseFragment() {
             userFullInformationBinding.userFullInformation.setBackgroundColor(resources.getColor(R.color.white))
         }
 
-
-        val data = requireArguments().getParcelable<Result>("UserFullInformation")
+        val data = arguments?.getSerializable("UserFullInformation")
         if (data != null) {
-            setContent(data)
+            setContent(data as Result)
         }
     }
 
